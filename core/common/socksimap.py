@@ -22,12 +22,13 @@ class SocksIMAP4(IMAP4):
 
         self.proxy_addr = proxy_addr
         self.proxy_port = proxy_port
+        self.timeout = timeout
         self.rdns = rdns
         self.username = username
         self.password = password
         self.proxy_type = SocksIMAP4.PROXY_TYPES[proxy_type.lower()]
 
-        super().__init__(host, port, None)
+        super().__init__(host, port, timeout)
 
     def _create_socket(self, timeout=None):
         return create_connection((self.host, self.port), proxy_type=self.proxy_type, proxy_addr=self.proxy_addr,
