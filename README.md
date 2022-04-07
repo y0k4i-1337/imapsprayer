@@ -19,6 +19,9 @@ A simple IMAP password sprayer.
 
 This tool performs password spraying against an IMAP server with support for SSL connections and socks proxy.
 
+For Gmail and O365, `imapsprayer` implements a simple heuristic for detecting cases when credential is valid but access is 
+denied for some reason (application specific password, MFA, account blocked).
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
