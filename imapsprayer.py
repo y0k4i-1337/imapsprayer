@@ -185,10 +185,10 @@ if __name__ == "__main__":
             sleep=args.sleep,
             jitter=args.jitter,
             lockout=args.lockout,
-            outputfile=args.output,
             randomize=args.shuffle,
             slack=args.slack
         )
+        sprayer.spray_stats(output=args.output, slack=args.slack)
     except IOError as e:
         print(e)
         exit(1)

