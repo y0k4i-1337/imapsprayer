@@ -6,7 +6,7 @@ authors = ["Mayk <7395296+yok4i@users.noreply.github.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8 || ^3.9"
+python = "^3.9 || ^3.10"
 PySocks = "^1.7.1"
 urllib3 = "^1.26.9"
 requests = "^2.27.1"
