@@ -108,6 +108,7 @@ poetry run ./imapsprayer.py -U emails.txt -P passwords.txt --proxy socks5://127.
 
 Only socks proxies supported.
 
+[![asciicast](https://asciinema.org/a/RtllWYVmVTApJVX1FzL2v8auk.svg)](https://asciinema.org/a/RtllWYVmVTApJVX1FzL2v8auk)
 
 ## Versioning
 
