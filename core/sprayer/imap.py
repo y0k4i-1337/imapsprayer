@@ -46,7 +46,7 @@ class IMAPSprayer:
     def spray(self, *, userlist: List[str],
                 passwordlist: List[str],
                 sleep: int, jitter: int, lockout: int,
-                randomize: bool = False, slack: str = None):     
+                randomize: bool = False, slack: str = None, retry: int = 3):
         self.creds = {}
         self.invalid = 0
         last_index = len(passwordlist) - 1
@@ -68,20 +68,20 @@ class IMAPSprayer:
                 )
 
                 # Create new client for each user
-                retry = 0
+                retcount = 0
                 loaded = None
                 while loaded is None:
                     try:
                         self._new_client()
                         loaded = True
                     except BaseException as e:
-                        retry += 1
-                        if retry == 5:
+                        retcount += 1
+                        if retcount == retry:
                             print("[ERROR] %s" % e)
-                            exit(1)
+                            continue
 
                 # Try login with credential
-                retry = 0
+                retcount = 0
                 issued = None
                 err = None
                 typ = ""
@@ -94,8 +94,8 @@ class IMAPSprayer:
                         issued = True
                         err = e.__str__()
                     except BaseException as e:
-                        retry += 1
-                        if retry == 3:
+                        retcount += 1
+                        if retcount == retry:
                             print("[ERROR] %s" % e)
                             issued = False
                 if not issued:

@@ -142,6 +142,13 @@ if __name__ == "__main__":
         required=False,
     )
     parser.add_argument(
+        "--retry",
+        type=int,
+        default=3,
+        required=False,
+        help="Number of times to retry in case of connection errors (default: %(default)s)"
+    )
+    parser.add_argument(
         "-s", "--shuffle", action="store_true", help="Shuffle user list", required=False
     )
     parser.add_argument(
@@ -154,6 +161,7 @@ if __name__ == "__main__":
     assert args.sleep >= 0
     assert args.jitter >= 0
     assert args.lockout >= 0
+    assert args.retry >= 0
     assert args.timeout is None or args.timeout >= 0
 
     if args.proxy:
@@ -186,7 +194,8 @@ if __name__ == "__main__":
             jitter=args.jitter,
             lockout=args.lockout,
             randomize=args.shuffle,
-            slack=args.slack
+            slack=args.slack,
+            retry=args.retry
         )
         sprayer.spray_stats(output=args.output, slack=args.slack)
     except IOError as e:
